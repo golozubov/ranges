@@ -17,7 +17,7 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    },
+    }
   },
   "rules": {
     "array-bracket-spacing": [2, "never"],
@@ -125,6 +125,7 @@
     "require-yield": 0,
     "rest-spread-spacing": 2,
     "require-await": 2,
+    "semi": [2, "always"],
     "space-before-blocks": 2,
     "space-before-function-paren": [2, {
       "anonymous": "always",
