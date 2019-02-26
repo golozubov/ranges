@@ -8,25 +8,32 @@ describe('RangeCollection', () => {
         const rc = new RangeCollection();
 
         rc.add([1, 5]);
-        rc.print();
+        let collection = rc.print();
         // Should display: [1, 5)
+        collection.should.eql('[1; 5)');
 
         rc.add([10, 20]);
-        rc.print();
+        collection = rc.print();
         // Should display: [1, 5) [10, 20)
+        collection.should.eql('[1; 20)');
 
         rc.add([20, 20]);
         rc.print();
         // Should display: [1, 5) [10, 20)
 
         rc.add([20, 21]);
-        rc.print();
+        collection = rc.print();
         // Should display: [1, 5) [10, 21)
+        collection.should.eql('[1; 21)');
 
         rc.add([2, 4]);
-        rc.print();
+        collection = rc.print();
         // Should display: [1, 5) [10, 21)
+        collection.should.eql('[1; 21)');
 
+        // rc.add([5, 10]);
+        
+        /*
         rc.add([3, 8]);
         rc.print();
         // Should display: [1, 8) [10, 21)
@@ -44,7 +51,7 @@ describe('RangeCollection', () => {
         // Should display: [1, 8) [11, 15) [17, 21)
 
         rc.remove([3, 19]);
-        rc.print();
+        rc.print(); */
         // Should display: [1, 3) [19, 21)
     });
 });
