@@ -79,9 +79,31 @@ export class RangeCollection {
      * Prints out the list of ranges in the range collection
      */
     print() {
-        // TODO: implement this
-        console.log(this.tree); // eslint-disable-line no-console
-        return this.tree.toString();
+        if (!this.tree) {
+            return '';
+        }
+
+        const output = this._printRecursive(this.tree);
+        console.log(output); // eslint-disable-line no-console
+        return output;
+    }
+
+    _printRecursive(node) {
+        if (node.isLeaf()) {
+            return node.toString();
+        }
+
+        let output = '';
+
+        if (node.left) {
+            output = this._printRecursive(node.left);
+        }
+
+        if (node.right) {
+            output = `${output} ${this._printRecursive(node.right)}`;
+        }
+
+        return output;
     }
 
     _addRecursive(node, range) {

@@ -15,29 +15,29 @@ describe('RangeCollection', () => {
         rc.add([10, 20]);
         collection = rc.print();
         // Should display: [1, 5) [10, 20)
-        collection.should.eql('[1; 20)');
+        collection.should.eql('[1; 5) [10; 20)');
 
         rc.add([20, 20]);
-        rc.print();
+        collection = rc.print();
         // Should display: [1, 5) [10, 20)
+        collection.should.eql('[1; 5) [10; 20)');
 
         rc.add([20, 21]);
         collection = rc.print();
         // Should display: [1, 5) [10, 21)
-        collection.should.eql('[1; 21)');
+        collection.should.eql('[1; 5) [10; 21)');
 
         rc.add([2, 4]);
         collection = rc.print();
         // Should display: [1, 5) [10, 21)
-        collection.should.eql('[1; 21)');
+        collection.should.eql('[1; 5) [10; 21)');
 
-        // rc.add([5, 10]);
-        
-        /*
         rc.add([3, 8]);
-        rc.print();
+        collection = rc.print();
         // Should display: [1, 8) [10, 21)
+        collection.should.eql('[1; 8) [10; 21)');
 
+        /*
         rc.remove([10, 10]);
         rc.print();
         // Should display: [1, 8) [10, 21)
