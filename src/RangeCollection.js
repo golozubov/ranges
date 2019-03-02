@@ -71,8 +71,17 @@ export class RangeCollection {
      * @param {Array<number>} range - Array of two integers that specify beginning and end of range.
      */
     remove(range) {
-        // TODO: implement this
-        range;
+        this._checkRange(range);
+
+        if (this._isTrivial(range)) {
+            return;
+        }
+
+        if (!this.tree) {
+            return;
+        }
+
+        this.tree = this._removeRecursive(this.tree, range);
     }
 
     /**
@@ -86,6 +95,69 @@ export class RangeCollection {
         const output = this._printRecursive(this.tree);
         console.log(output); // eslint-disable-line no-console
         return output;
+    }
+
+    _removeRecursive(node, range) {
+        if (node.isLeaf()) {
+            return this._removeRangeFromLeaf(node, range);
+        }
+
+        if (node.lowerBound >= range[1] || node.upperBound <= range[0]) {
+            return node;
+        }
+
+        if (node.left && range[0] <= node.left.upperBound) {
+            node.left = this._removeRecursive(node.left, range);
+        }
+
+        if (node.right && range[1] >= node.right.lowerBound) {
+            node.right = this._removeRecursive(node.right, range);
+        }
+
+        if (!node.left && !node.right) {
+            return null;
+        }
+
+        if (!node.left) {
+            return node.right;
+        }
+
+        if (!node.right) {
+            return node.left;
+        }
+
+        node.lowerBound = node.left.lowerBound;
+        node.upperBound = node.right.upperBound;
+
+        return node;
+    }
+
+    _removeRangeFromLeaf(node, range) {
+        if (node.lowerBound >= range[1] || node.upperBound <= range[0]) {
+            return node;
+        }
+
+        if (node.fitIntoRange(range)) {
+            return null;
+        }
+
+        if (node.lowerBound < range[0] && node.upperBound > range[1]) {
+            node.left = new RangeTreeNode(node.lowerBound, range[0]);
+            node.right = new RangeTreeNode(range[1], node.upperBound);
+            return node;
+        }
+
+        if (node.lowerBound >= range[0] && node.upperBound > range[1]) {
+            [, node.lowerBound] = range;
+            return node;
+        }
+
+        if (node.lowerBound < range[0] && node.upperBound <= range[1]) {
+            [node.upperBound] = range;
+            return node;
+        }
+
+        return node;
     }
 
     _printRecursive(node) {

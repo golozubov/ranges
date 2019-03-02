@@ -37,21 +37,25 @@ describe('RangeCollection', () => {
         // Should display: [1, 8) [10, 21)
         collection.should.eql('[1; 8) [10; 21)');
 
-        /*
         rc.remove([10, 10]);
-        rc.print();
+        collection = rc.print();
         // Should display: [1, 8) [10, 21)
+        collection.should.eql('[1; 8) [10; 21)');
+
 
         rc.remove([10, 11]);
-        rc.print();
+        collection = rc.print();
         // Should display: [1, 8) [11, 21)
+        collection.should.eql('[1; 8) [11; 21)');
 
         rc.remove([15, 17]);
-        rc.print();
+        collection = rc.print();
         // Should display: [1, 8) [11, 15) [17, 21)
+        collection.should.eql('[1; 8) [11; 15) [17; 21)');
 
         rc.remove([3, 19]);
-        rc.print(); */
+        collection = rc.print();
         // Should display: [1, 3) [19, 21)
+        collection.should.eql('[1; 3) [19; 21)');
     });
 });
