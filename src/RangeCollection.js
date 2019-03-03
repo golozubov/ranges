@@ -90,6 +90,8 @@ export class RangeCollection {
         return this._printRecursive(this.tree);
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+
     _removeRecursive(node, range) {
         if (node.isLeaf()) {
             return this._removeRangeFromLeaf(node, range);
@@ -140,16 +142,12 @@ export class RangeCollection {
             return node;
         }
 
-        if (node.lowerBound >= range[0] && node.upperBound > range[1]) {
+        if (node.upperBound > range[1]) {
             [, node.lowerBound] = range;
             return node;
         }
 
-        if (node.lowerBound < range[0] && node.upperBound <= range[1]) {
-            [node.upperBound] = range;
-            return node;
-        }
-
+        [node.upperBound] = range;
         return node;
     }
 
