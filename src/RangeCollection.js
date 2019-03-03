@@ -28,6 +28,59 @@ class RangeTreeNode {
         return this.lowerBound <= x && x <= this.upperBound;
     }
 
+    addRangeToLeaf(range) {
+        if (this.rangeFitInto(range)) {
+            return this;
+        }
+
+        if (this.fitIntoRange(range)) {
+            [this.lowerBound, this.upperBound] = range;
+            return this;
+        }
+
+        if (this.pointIsInClosedInterval(range[0]) || this.pointIsInClosedInterval(range[1])) {
+            this.lowerBound = Math.min(this.lowerBound, range[0]);
+            this.upperBound = Math.max(this.upperBound, range[1]);
+            return this;
+        }
+
+        const newNode = new RangeTreeNode(Math.min(this.lowerBound, range[0]), Math.max(this.upperBound, range[1]));
+
+        if (this.lowerBound < range[0]) {
+            newNode.left = this;
+            newNode.right = new RangeTreeNode(range[0], range[1]);
+        } else {
+            newNode.left = new RangeTreeNode(range[0], range[1]);
+            newNode.right = this;
+        }
+
+        return newNode;
+    }
+
+    removeRangeFromLeaf(range) {
+        if (this.lowerBound >= range[1] || this.upperBound <= range[0]) {
+            return this;
+        }
+
+        if (this.fitIntoRange(range)) {
+            return null;
+        }
+
+        if (this.lowerBound < range[0] && this.upperBound > range[1]) {
+            this.left = new RangeTreeNode(this.lowerBound, range[0]);
+            this.right = new RangeTreeNode(range[1], this.upperBound);
+            return this;
+        }
+
+        if (this.upperBound > range[1]) {
+            [, this.lowerBound] = range;
+            return this;
+        }
+
+        [this.upperBound] = range;
+        return this;
+    }
+
     toString() {
         return `[${this.lowerBound}; ${this.upperBound})`;
     }
@@ -94,7 +147,7 @@ export class RangeCollection {
 
     _removeRecursive(node, range) {
         if (node.isLeaf()) {
-            return this._removeRangeFromLeaf(node, range);
+            return node.removeRangeFromLeaf(range);
         }
 
         if (node.lowerBound >= range[1] || node.upperBound <= range[0]) {
@@ -127,30 +180,6 @@ export class RangeCollection {
         return node;
     }
 
-    _removeRangeFromLeaf(node, range) {
-        if (node.lowerBound >= range[1] || node.upperBound <= range[0]) {
-            return node;
-        }
-
-        if (node.fitIntoRange(range)) {
-            return null;
-        }
-
-        if (node.lowerBound < range[0] && node.upperBound > range[1]) {
-            node.left = new RangeTreeNode(node.lowerBound, range[0]);
-            node.right = new RangeTreeNode(range[1], node.upperBound);
-            return node;
-        }
-
-        if (node.upperBound > range[1]) {
-            [, node.lowerBound] = range;
-            return node;
-        }
-
-        [node.upperBound] = range;
-        return node;
-    }
-
     _printRecursive(node) {
         if (node.isLeaf()) {
             return node.toString();
@@ -171,7 +200,7 @@ export class RangeCollection {
 
     _addRecursive(node, range) {
         if (node.isLeaf()) {
-            return this._addRangeToLeaf(node, range);
+            return node.addRangeToLeaf(range);
         }
 
         if (node.left && range[0] <= node.left.upperBound) {
@@ -188,35 +217,6 @@ export class RangeCollection {
         }
 
         return node;
-    }
-
-    _addRangeToLeaf(node, range) {
-        if (node.rangeFitInto(range)) {
-            return node;
-        }
-
-        if (node.fitIntoRange(range)) {
-            [node.lowerBound, node.upperBound] = range;
-            return node;
-        }
-
-        if (node.pointIsInClosedInterval(range[0]) || node.pointIsInClosedInterval(range[1])) {
-            node.lowerBound = Math.min(node.lowerBound, range[0]);
-            node.upperBound = Math.max(node.upperBound, range[1]);
-            return node;
-        }
-
-        const newNode = new RangeTreeNode(Math.min(node.lowerBound, range[0]), Math.max(node.upperBound, range[1]));
-
-        if (node.lowerBound < range[0]) {
-            newNode.left = node;
-            newNode.right = new RangeTreeNode(range[0], range[1]);
-        } else {
-            newNode.left = new RangeTreeNode(range[0], range[1]);
-            newNode.right = node;
-        }
-
-        return newNode;
     }
 
     _checkRange(range) {
