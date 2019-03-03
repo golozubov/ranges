@@ -92,9 +92,7 @@ export class RangeCollection {
             return '';
         }
 
-        const output = this._printRecursive(this.tree);
-        console.log(output); // eslint-disable-line no-console
-        return output;
+        return this._printRecursive(this.tree);
     }
 
     _removeRecursive(node, range) {
