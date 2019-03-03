@@ -1,5 +1,6 @@
 /* eslint-env node, mocha */
-import { InvalidRangeError, RangeCollection } from './RangeCollection';
+import { InvalidRangeError } from '../src/InvalidRangeError';
+import { RangeCollection } from '../src/RangeCollection';
 
 
 describe('RangeTree', () => {

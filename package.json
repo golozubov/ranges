@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "lint": "eslint src",
-    "test": "mocha --opts mocha.opts src/*.test.js"
+    "test": "mocha --opts mocha.opts test/*.test.js"
   },
   "author": "Artem Golozubov",
   "license": "WTFPL",

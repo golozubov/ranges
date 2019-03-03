@@ -1,5 +1,5 @@
 /* eslint-env node, mocha */
-import { RangeCollection } from './RangeCollection';
+import { RangeCollection } from '../src/RangeCollection';
 
 
 describe('RangeCollection', () => {
