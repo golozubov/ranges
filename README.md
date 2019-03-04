@@ -35,6 +35,5 @@ $ npm ci
 Testing
 -------
 ```
-$ npm run lint
 $ npm test
 ```

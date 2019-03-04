@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "lint": "eslint src",
+    "pretest": "npm run lint",
     "test": "mocha --opts mocha.opts test/*.test.js"
   },
   "author": "Artem Golozubov",
