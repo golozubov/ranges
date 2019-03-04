@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/golozubov/ranges.svg?branch=master)](https://travis-ci.org/golozubov/ranges)
+
 Range Collection
 ================
 
